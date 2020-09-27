@@ -9,6 +9,3 @@
   #base    = ""
   publish = "build/"
   command = "./netlify.sh"
-
-[template.environment]
-  SOUPAULT_VERSION = "2.0.0"
