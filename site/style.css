@@ -1,0 +1,122 @@
+/** Fixups */
+
+/* Avoid elements wider than screen */
+img
+{
+    display: inline-block;
+    max-width: 100%;
+}
+
+pre, code, sample
+{
+    white-space: pre-wrap;
+    hyphens: none;
+}
+
+table
+{
+    max-width: 100%;
+}
+
+
+body
+{
+    margin: 0;
+    line-height: 1.4;
+}
+
+/** Structural blocks */
+
+body
+{
+    max-width: 1000px;
+
+    padding-top: 2%;
+    padding-bottom: 4%;
+    
+    margin-left:  auto; 
+    margin-right: auto;
+}
+
+/* Visual styles */
+header 
+{
+    text-align: center;
+}
+
+nav
+{
+    font-size: 110%;
+
+    border-bottom: 2px solid #c90309;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    text-align: center;
+}
+
+footer
+{
+    text-align: center;
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 2px solid #c90309;
+}
+
+/* Visual styles */
+
+a { color: #d65906; }
+
+a.nav-active { color: #c90309; font-weight: bold; }
+
+nav a { text-decoration: none; }
+
+a.here { text-decoration: none; }
+
+hr
+{
+    border: 0 none;
+    color: #d65906;
+    background-color: #d65906;
+    height: 2px;
+}
+
+hr.footnotes { width: 40%; }
+
+a.footnote
+{
+    text-decoration: none;
+}
+
+ul.toc { list-style: none; }
+
+h5 { font-size: 100%; }
+
+/** Typography */
+
+@supports (hyphens: auto) or (-ms-hyphens: auto)
+{
+    main
+    {
+        text-align: justify;
+        hyphens: auto;
+    }
+}
+
+body
+{
+    font-family: sans-serif;
+}
+
+pre
+{
+    background-color: #efefef;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+}
+
+code {
+  background-color: #efefef;
+}
+
