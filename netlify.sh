@@ -8,7 +8,7 @@ if [ -z "${SOUPAULT_VERSION}" ]; then
 fi
 
 echo "Downloading and unpacking soupault"
-wget https://files.baturin.org/software/soupault/$SOUPAULT_VERSION/soupault-$SOUPAULT_VERSION-linux-x86_64.tar.gz
+wget https://github.com/dmbaturin/soupault/releases/download/$SOUPAULT_VERSION/soupault-$SOUPAULT_VERSION-linux-x86_64.tar.gz
 if [ $? != 0 ]; then
     echo "Error: failed to download soupault."
     exit 1
