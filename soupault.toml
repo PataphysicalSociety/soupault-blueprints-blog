@@ -70,6 +70,7 @@
     <a href="{{url}}">Read more</a>
 """
 
+# This view displays the first ten entries on the main page
 [index.views.blog-summary]
   index_selector = "#blog-summary"
 
@@ -77,7 +78,7 @@
 
   index_template = """
     <dl>
-      {% for e in entries %}
+      {% for e in sublist(0, 10, entries) %}
       <dt>{{e.date}}</dt>
       <dd> <a href="{{e.url}}">{{e.title}}</a> </dd>
       {% endfor %}
