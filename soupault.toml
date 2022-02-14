@@ -58,6 +58,7 @@
   title = { selector = ["#post-title", "h1"] }
   excerpt = { selector = ["#post-excerpt", "p"] }
   date = { selector = ["#post-date", "time"] }
+  tags = { selector = ".post-tag", select_all = true }
 
   reading_time = { selector = "#reading-time" }
 
@@ -71,13 +72,17 @@
   # There's also an index_template option if you want to loop through the items yourself,
   # and index_processor for those who want to use an external script
   # (index data JSON written to its stdin)
-  index_item_template = """
-    <h2><a href="{{url}}">{{title}}</a></h2>
-    <p><strong>Last update:</strong> {{date}}.</p>
-    <p><strong>Reading time:</strong> {{reading_time}}.</p>
-    <p>{{excerpt}}</p>
-    <a href="{{url}}">Read more</a>
-"""
+  index_template = """
+    {% for e in entries %}
+    <h2><a href="{{e.url}}">{{e.title}}</a></h2>
+    <p><strong>Last update:</strong> {{e.date}}.</p>
+    <p><strong>Reading time:</strong> {{e.reading_time}}.</p>
+    <p>{{e.excerpt}}</p>
+    <a href="{{e.url}}">Read more</a>
+    {% endfor %}
+  """
+
+  #file = "hooks/blog-index.lua"
 
 # This view displays the first ten entries on the main page
 [index.views.blog-summary]
@@ -137,15 +142,25 @@
   content_container_selector = "main"
 
   post_header_template = '''
-<div id="post-header">
-  <h1 id="post-title">{{title}}</h1>
-  <time id="post-date" datetime="{{date}}">{{date}}</time>
-</div>
+    <div id="post-header">
+      <h1 id="post-title">{{title}}</h1>
+      <time id="post-date" datetime="{{date}}">{{date}}</time>
+      {% if tags %}
+        <div class="post-tag">
+         <span>Tags: </span>
+         {%- for t in tags -%}
+           <span class="post-tag">{{t}}</span>{% if not loop.last %}, {% endif %}
+         {%- endfor -%}
+         </div>
+        {% endif %}
+    </div>
 '''
 
 # Why require adding a target element for the reading-time plugin by hand?
 # We'll insert it automatically
 [widgets.insert-reading-time-container]
+  after = "make-post-header"
+
   # Reading time container should only be in blog/*
   section = "blog/"
 
@@ -155,8 +170,8 @@
   widget = "insert_html"
 
   # Insert the reading time container right after the post title in <h1>
-  action = "insert_after"
-  selector = "h1"
+  action = "append_child"
+  selector = "#post-header"
 
   html = '<div>Estimated reading time: <span id="reading-time"></span>.</div>'
 

@@ -8,8 +8,6 @@ if not config["content_container_selector"] then
   Plugin.fail("content_container_selector option must be specified")
 end
 
-Log.debug("so far 1")
-
 content_container = HTML.select_one(page, config["content_container_selector"])
 if not content_container then
   Log.warning(format("Page does not have an element matching the \"%s\" content container selector"),
@@ -18,7 +16,7 @@ if not content_container then
 end
 
 -- The goal of this plugin is to produce uniform post headers
--- from custom <post-title>, <post-date>, and <post-excerpt> elements
+-- from custom <post-title>, <post-date>, <post-tags>, and <post-excerpt> elements
 --
 -- There are two cases.
 --
@@ -91,10 +89,12 @@ end
 
 env = {}
 
+-- Extract and clean up the <post-title> element
 post_title = HTML.select_one(page, "post-title")
 env["title"] = HTML.inner_html(post_title)
 clean_up(post_title)
 
+-- Extract and clean up the <post-date> element
 post_date = HTML.select_one(page, "post-date")
 post_datetime = HTML.get_attribute(post_date, "datetime")
 if post_datetime then
@@ -109,6 +109,17 @@ else
   HTML.set_tag_name(post_date, "time")
 end
 
+-- Extract and clean up the <post-tags> element
+-- It's supposed to look like <post-tags>foo, bar, baz</post-tags>
+-- We extract the tags string and split it into individual tags
+post_tags = HTML.select_one(page, "post-tags")
+tags = HTML.strip_tags(post_tags)
+tags = Regex.split(tags, ",")
+Table.apply_to_values(String.trim, tags)
+env["tags"] = tags
+clean_up(post_tags)
+
+--- Handle the <post-excerpt> element
 
 post_excerpt = HTML.select_one(page, "post-excerpt")
 env["excerpt"] = HTML.inner_html(post_excerpt)
@@ -121,18 +132,14 @@ if HTML.get_tag_name(excerpt_parent) == "p" then
   -- and call it a day
   HTML.unwrap(excerpt)
 else
-  Log.debug("this case ") 
   local children = HTML.select_any_of(excerpt, {"p", "div"})
   if children then
     HTML.set_tag_name(post_excerpt, "div")
   else
-    Log.debug("p case")
     HTML.set_tag_name(post_excerpt, "p")
---    HTML.delete(excerpt)
   end
   HTML.set_attribute(post_excerpt, "id", "post-excerpt")
 end
-
 
 -- Now clean up the <post-metadata> container
 post_metadata_container = HTML.select_one(page, "post-metadata")

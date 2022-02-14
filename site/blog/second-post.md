@@ -1,3 +1,6 @@
+<post-tags>test</post-tags>
+
+
 This paragraph is not used as a post excerpt, even though it's the first paragraph
 in the page. 
 
