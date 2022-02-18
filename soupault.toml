@@ -65,6 +65,7 @@
 [index.views.blog-index]
   # Insert generated index into an element that matches "#blog-index" selector.
   index_selector = "#blog-entries"
+  #action = "prepend_child"
 
   section = "blog"
 
@@ -106,25 +107,29 @@
 # default is used if page has no elements matching those selectors.
 [widgets.set-page-title]
   widget = "title"
+
   selector = ["#page-title", "h1"]
   default = "Sample site"
   append = " &mdash; Sample site"
 
-# Inserts the contents of templates/nav.html right before the <main> element
+# Inserts the contents of templates/header.html right before the <main> element
 # There's a variety of actions, including prepend_child and replace_content
-[widgets.insert-nav-menu]
+[widgets.insert-header]
   widget = "include"
+
   selector = "main"
   action = "insert_before"
-  file = "templates/nav.html"
+  file = "templates/header.html"
 
 # This widget comes from plugins/section-link-highlight.lua
 # It highlights the "active" link in the navigation menu,
 # that is, the link that matches the current page URL
 [widgets.highlight-active-link]
-  # Must run after "insert-nav-menu"
-  after = ["insert-nav-menu"]
   widget = "section-link-highlight"
+
+  # Must run only after the header with a navigation menu is inserted
+  after = ["insert-header"]
+
   selector = "nav"
   active_link_class = "nav-active"
 
@@ -159,6 +164,8 @@
 # Why require adding a target element for the reading-time plugin by hand?
 # We'll insert it automatically
 [widgets.insert-reading-time-container]
+  widget = "insert_html"
+
   after = "make-post-header"
 
   # Reading time container should only be in blog/*
@@ -166,8 +173,6 @@
 
   # ...but not in blog/index.html
   exclude_path_regex = "(.*)/index(.*)"
-
-  widget = "insert_html"
 
   # Insert the reading time container right after the post title in <h1>
   action = "append_child"
@@ -178,12 +183,13 @@
 # This widget comes from plugins/reading-time.lua
 # It calculates estimated reading time based on word count
 [widgets.insert-reading-time]
+  widget = "reading-time"
+
   # If this widget runs before "insert-reading-time-container",
   # there will be nowhere to insert the reading time.
   # This is why we explicitly schedule it to run after that widget.
   after = "insert-reading-time-container"
 
-  widget = "reading-time"
   selector = "#reading-time"
 
   # The element where it looks for page "content"
@@ -211,3 +217,21 @@
 
   use_heading_slug = true
 
+[widgets.insert-footnotes-container]
+  widget = "insert-if"
+
+  selector = "main"
+  check_selector = "fn"
+  html = '<div id="footnotes"> </div>'
+
+[widgets.footnotes]
+  widget = "footnotes"
+
+  after = "insert-footnotes-container"
+
+  selector = "div#footnotes"
+  footnote_selector = ["fn"]
+  footnote_link_class = "footnote"
+  back_links = true
+  link_id_prepend = "footnote-"
+  back_link_id_append = "-ref"
