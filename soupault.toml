@@ -35,6 +35,9 @@
   plugin_discovery = true
   plugin_dirs = ["plugins"]
 
+[custom_options]
+  site_url = "https://www.example.com"
+
 [preprocessors]
   md = 'pandoc -f commonmark+smart -t html'
 
@@ -235,3 +238,15 @@
   back_links = true
   link_id_prepend = "footnote-"
   back_link_id_append = "-ref"
+
+[widgets.atom]
+  widget = "atom"
+  page = "blog/index.md"
+  feed_file = "atom.xml"
+  use_section = "blog"
+
+  feed_author = "J. Random Hacker"
+  feed_author_email = "jrandomhacker@example.com"
+  feed_title = """Sample soupault-based blog"""
+  feed_subtitle = "Demonstrating how to create a blog with soupault"
+  #feed_logo = "https://example.com/favicon.png"
