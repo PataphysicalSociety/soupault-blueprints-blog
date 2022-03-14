@@ -36,7 +36,22 @@
   plugin_dirs = ["plugins"]
 
 [custom_options]
-  site_url = "https://www.example.com"
+  atom_feeds = false
+
+  # If you want to generate Atom feeds, you will need to adjust the site metadata config below:
+
+  # Required:
+  # site_url = "https://www.example.com/~jrandomhacker"
+
+  # Optional but strongly recommended:
+  # site_author = "J. Random Hacker"
+  # site_author_email = "jrandomhacker@example.com"
+  # site_title = "My website"
+  # site_logo = "https://example.com/~jrandomhacker/favicon.png"
+
+  # Completely optional: 
+  # site_subtitle = "Some subtitle"
+
 
 [preprocessors]
   md = 'pandoc -f commonmark+smart -t html'
@@ -244,9 +259,3 @@
   page = "blog/index.md"
   feed_file = "atom.xml"
   use_section = "blog"
-
-  feed_author = "J. Random Hacker"
-  feed_author_email = "jrandomhacker@example.com"
-  feed_title = """Sample soupault-based blog"""
-  feed_subtitle = "Demonstrating how to create a blog with soupault"
-  #feed_logo = "https://example.com/favicon.png"

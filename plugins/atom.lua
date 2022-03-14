@@ -1,17 +1,33 @@
 -- Atom feed generator
 
-Plugin.require_version("2.2.0")
+Plugin.require_version("4.0.0")
 
-data = config
+data = {}
 
 date_input_formats = soupault_config["index"]["date_formats"]
 
 feed_file = config["feed_file"]
 
-data["site_url"] = soupault_config["custom_options"]["site_url"]
-data["feed_id"] = Sys.join_path(soupault_config["custom_options"]["site_url"], feed_file)
+custom_options = soupault_config["custom_options"]
+
+if not Table.has_key(custom_options, "site_url") then
+  Plugin.exit([[Atom feed generation is not enabled in the config. If you want to enable it, add custom_options["atom_feeds = true"] ]])
+end
+
+if not Table.has_key(custom_options, "site_url") then
+  Plugin.fail([[custom_options["site_url"] option is required when feed generation is enabled]])
+end
+
+data["site_url"] = custom_options["site_url"]
+data["feed_id"] = Sys.join_path(custom_options["site_url"], feed_file)
 
 data["soupault_version"] = Plugin.soupault_version()
+
+data["feed_author"] = custom_options["site_author"]
+data["feed_author_email"] = custom_options["site_author_email"]
+data["feed_title"] = custom_options["site_title"]
+data["feed_subtitle"] = custom_options["site_subtitle"]
+data["feed_logo"] = custom_options["site_logo"]
 
 
 function in_section(entry)
@@ -61,15 +77,15 @@ feed_template = [[
 <?xml version='1.0' encoding='UTF-8'?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>{{feed_id}}</id>
-  <title>{{feed_title}}</title>
   <updated>{{feed_last_updated}}</updated>
+  <title>{{feed_title}}</title>
+  {%- if feed_subtitle -%} <subtitle>{{feed_subtitle}}</subtitle> {%- endif -%}
+  {%- if feed_logo -%} <logo>{{feed_logo}}</logo> {%- endif -%}
   <author>
     <name>{{feed_author}}</name>
-    <email>{{feed_author_email}}</email>
+    {%- if feed_author_email -%}<email>{{feed_author_email}}</email> {%- endif -%}
   </author>
   <generator uri="https://soupault.app" version="{{soupault_version}}">soupault</generator>
-  <logo>{{feed_logo}}</logo>
-  <subtitle>{{feed_subtitle}}</subtitle>
   {%- for e in entries %}
   <entry>
     <id>{{site_url}}{{e.url}}</id>
