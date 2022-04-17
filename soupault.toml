@@ -36,6 +36,8 @@
   plugin_dirs = ["plugins"]
 
 [custom_options]
+  blog_summary_max_entries = 10
+
   atom_feeds = false
 
   # If you want to generate Atom feeds, you will need to adjust the site metadata config below:
@@ -101,7 +103,7 @@
     {% endfor %}
   """
 
-  #file = "hooks/blog-index.lua"
+  file = "helpers/blog-index.lua"
 
 # This view displays the first ten entries on the main page
 [index.views.blog-summary]
@@ -110,8 +112,9 @@
   section = "blog"
 
   index_template = """
+    {% set limit = int(soupault_config.custom_options.blog_summary_max_entries) %}
     <dl>
-      {% for e in sublist(0, 10, entries) %}
+      {% for e in sublist(0, limit, entries) %}
       <dt>{{e.date}}</dt>
       <dd> <a href="{{e.url}}">{{e.title}}</a> </dd>
       {% endfor %}
@@ -169,15 +172,16 @@
       <h1 id="post-title">{{title}}</h1>
       <time id="post-date" datetime="{{date}}">{{date}}</time>
       {% if tags %}
-        <div class="post-tag">
+        <div class="post-tags">
          <span>Tags: </span>
          {%- for t in tags -%}
-           <span class="post-tag">{{t}}</span>{% if not loop.last %}, {% endif %}
+           <a href="/blog/tag/{{t}}"><span class="post-tag">{{t}}</span></a>{% if not loop.last %}, {% endif %}
          {%- endfor -%}
          </div>
         {% endif %}
     </div>
 '''
+
 
 # Why require adding a target element for the reading-time plugin by hand?
 # We'll insert it automatically
