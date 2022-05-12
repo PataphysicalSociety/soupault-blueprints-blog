@@ -96,8 +96,16 @@
   index_template = """
     {% for e in entries %}
     <h2><a href="{{e.url}}">{{e.title}}</a></h2>
-    <p><strong>Last update:</strong> {{e.date}}.</p>
-    <p><strong>Reading time:</strong> {{e.reading_time}}.</p>
+    <div><strong>Last update:</strong> {{e.date}}.</div>
+    {% if e.tags %}
+    <div class="post-tags">
+       <strong>Tags: </strong>
+       {%- for t in e.tags -%}
+         <a href="/blog/tag/{{t}}"><span class="post-tag">{{t}}</span></a>{% if not loop.last %}, {% endif %}
+       {%- endfor -%}
+    </div>
+    {% endif %}
+    <div><strong>Reading time:</strong> {{e.reading_time}}.</div>
     <p>{{e.excerpt}}</p>
     <a href="{{e.url}}">Read more</a>
     {% endfor %}
@@ -164,16 +172,17 @@
 [widgets.make-post-header]
   widget = "post-header"
   section = "blog/"
+  exclude_page = "blog/index.md"
 
   content_container_selector = "main"
 
   post_header_template = '''
     <div id="post-header">
       <h1 id="post-title">{{title}}</h1>
-      <time id="post-date" datetime="{{date}}">{{date}}</time>
+      <div><strong>Last update:</strong> <time id="post-date" datetime="{{date}}">{{date}}</time></div>
       {% if tags %}
         <div class="post-tags">
-         <span>Tags: </span>
+         <span><strong>Tags:</strong> </span>
          {%- for t in tags -%}
            <a href="/blog/tag/{{t}}"><span class="post-tag">{{t}}</span></a>{% if not loop.last %}, {% endif %}
          {%- endfor -%}
@@ -200,7 +209,7 @@
   action = "append_child"
   selector = "#post-header"
 
-  html = '<div>Estimated reading time: <span id="reading-time"></span>.</div>'
+  html = '<div><strong>Reading time:</strong> <span id="reading-time"></span>.</div>'
 
 # This widget comes from plugins/reading-time.lua
 # It calculates estimated reading time based on word count
