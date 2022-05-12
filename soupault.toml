@@ -72,8 +72,6 @@
 
   leaf_file = ".leaf"
 
-  dump_json = "index.json"
-
 [index.fields]
   title = { selector = ["#post-title", "h1"] }
   excerpt = { selector = ["#post-excerpt", "p"] }
