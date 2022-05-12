@@ -100,7 +100,7 @@
   index_template = """
     {% for e in entries %}
     <h2><a href="{{e.url}}">{{e.title}}</a></h2>
-    <div><strong>Last update:</strong> {{e.date}}.</div>
+    <div><strong>Last update:</strong> {{e.date}}</div>
     {% if e.tags %}
     <div class="post-tags">
        <strong>Tags: </strong>
@@ -109,7 +109,7 @@
        {%- endfor -%}
     </div>
     {% endif %}
-    <div><strong>Reading time:</strong> {{e.reading_time}}.</div>
+    <div><strong>Reading time:</strong> {{e.reading_time}}</div>
     <p>{{e.excerpt}}</p>
     <a href="{{e.url}}">Read more</a>
     {% endfor %}
@@ -217,7 +217,7 @@
   action = "append_child"
   selector = "#post-header"
 
-  html = '<div><strong>Reading time:</strong> <span id="reading-time"></span>.</div>'
+  html = '<div><strong>Reading time:</strong> <span id="reading-time"></span></div>'
 
 # This widget comes from plugins/reading-time.lua
 # It calculates estimated reading time based on word count
