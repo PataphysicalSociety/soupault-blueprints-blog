@@ -11,7 +11,7 @@ feed_file = config["feed_file"]
 custom_options = soupault_config["custom_options"]
 
 if not Table.has_key(custom_options, "site_url") then
-  Plugin.exit([[Atom feed generation is not enabled in the config. If you want to enable it, add custom_options["atom_feeds = true"] ]])
+  Plugin.exit([[Atom feed generation is not enabled in the config. If you want to enable it, set custom_options.atom_feeds = true]])
 end
 
 if not Table.has_key(custom_options, "site_url") then
