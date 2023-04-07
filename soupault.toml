@@ -145,6 +145,9 @@
 [widgets.set-page-title]
   widget = "title"
 
+  # Must run only after the header with an <h1 id="post-title"> element is inserted, which affects the blog section pages
+  after = 'make-post-header'
+
   selector = ["#page-title", "h1"]
   default = "Sample site"
   append = " &mdash; Sample site"
