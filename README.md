@@ -15,7 +15,7 @@ post lists, tags, Atom feeds.
 
 ## Using this blueprint
 
-* Install soupault 4.0.0 or later (see https://soupault.app/install/).
+* Install soupault 5.0.0 or later (see https://soupault.app/install/).
 * Run `soupault` in the blueprint directory.
 * Serve the `build/` directory (e.g. with `python3 -m http.server --directory build`) and visit the page.
 

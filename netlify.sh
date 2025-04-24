@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SOUPAULT_VERSION="4.0.0-beta1"
+SOUPAULT_VERSION="5.0.0"
 
 if [ -z "${SOUPAULT_VERSION}" ]; then
     echo "Error: soupault version is undefined, cannot decide what to download"
