@@ -12,9 +12,6 @@
   # Show detailed debug information
   debug = false
 
-  # Fail on page processing errors
-  strict = true
-
   # Where generated files go
   build_dir = "build/"
 
